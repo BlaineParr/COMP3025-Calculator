@@ -18,12 +18,15 @@ class ViewController: UIViewController
     var total = 0.0
     var mathType = -1
     var isFirstNum = true
+    var shouldReset = false
     
     //constants
     let ADD = 0
     let SUB = 1
     let MUL = 2
     let DIV = 3
+    
+    let formatter = NSNumberFormatter()
     
     @IBOutlet weak var resultsLabel: UILabel!
     
@@ -68,7 +71,7 @@ class ViewController: UIViewController
         } //else ends
     } //func stringToNum ends
     
-    //Button Methods/////////////////////////////////////////////////////////////////////////////////////////////////
+    //Button Methods////////////////////////////////////////////////////////////////////////////////////////////////
     @IBAction func zeroButtonClick(sender: UIButton)
     {
         if(resultsText != "0")
@@ -82,6 +85,12 @@ class ViewController: UIViewController
     
     @IBAction func oneButtonClick(sender: UIButton)
     {
+        if(shouldReset)
+        {
+            clearButtonClick(sender)
+            shouldReset = false
+        } //if ends
+        
         if(resultsText == "0")
         {
             resultsText = "1"
@@ -97,6 +106,12 @@ class ViewController: UIViewController
     
     @IBAction func twoButtonClick(sender: UIButton)
     {
+        if(shouldReset)
+        {
+            clearButtonClick(sender)
+            shouldReset = false
+        } //if ends
+        
         if(resultsText == "0")
         {
             resultsText = "2"
@@ -111,6 +126,12 @@ class ViewController: UIViewController
 
     @IBAction func threeButtonClick(sender: UIButton)
     {
+        if(shouldReset)
+        {
+            clearButtonClick(sender)
+            shouldReset = false
+        } //if ends
+        
         if(resultsText == "0")
         {
             resultsText = "3"
@@ -125,6 +146,12 @@ class ViewController: UIViewController
     
     @IBAction func fourButtonClick(sender: UIButton)
     {
+        if(shouldReset)
+        {
+            clearButtonClick(sender)
+            shouldReset = false
+        } //if ends
+        
         if(resultsText == "0")
         {
             resultsText = "4"
@@ -139,6 +166,12 @@ class ViewController: UIViewController
     
     @IBAction func fiveButtonClick(sender: UIButton)
     {
+        if(shouldReset)
+        {
+            clearButtonClick(sender)
+            shouldReset = false
+        } //if ends
+        
         if(resultsText == "0")
         {
             resultsText = "5"
@@ -153,6 +186,12 @@ class ViewController: UIViewController
     
     @IBAction func sixButtonClick(sender: UIButton)
     {
+        if(shouldReset)
+        {
+            clearButtonClick(sender)
+            shouldReset = false
+        } //if ends
+        
         if(resultsText == "0")
         {
             resultsText = "6"
@@ -167,6 +206,12 @@ class ViewController: UIViewController
     
     @IBAction func sevenButtonClick(sender: UIButton)
     {
+        if(shouldReset)
+        {
+            clearButtonClick(sender)
+            shouldReset = false
+        } //if ends
+        
         if(resultsText == "0")
         {
             resultsText = "7"
@@ -181,6 +226,12 @@ class ViewController: UIViewController
     
     @IBAction func eightButtonClick(sender: UIButton)
     {
+        if(shouldReset)
+        {
+            clearButtonClick(sender)
+            shouldReset = false
+        } //if ends
+        
         if(resultsText == "0")
         {
             resultsText = "8"
@@ -195,6 +246,12 @@ class ViewController: UIViewController
     
     @IBAction func nineButtonClick(sender: UIButton)
     {
+        if(shouldReset)
+        {
+            clearButtonClick(sender)
+            shouldReset = false
+        } //if ends
+        
         if(resultsText == "0")
         {
             resultsText = "9"
@@ -249,6 +306,8 @@ class ViewController: UIViewController
         {
             stringToNum()
             
+            isFirstNum = false
+            
             secondNum /= 100
             
             secondNum *= firstNum
@@ -256,6 +315,8 @@ class ViewController: UIViewController
             resultsText = String(secondNum)
             
             updateResultsLabel()
+            
+            shouldReset = true
         } //if ends
         
         else
@@ -266,6 +327,8 @@ class ViewController: UIViewController
     
     @IBAction func divideButtonClick(sender: UIButton)
     {
+        shouldReset = false
+        
         if(isFirstNum)
         {
             stringToNum()
@@ -276,6 +339,8 @@ class ViewController: UIViewController
     
     @IBAction func multiplyButtonClick(sender: UIButton)
     {
+        shouldReset = false
+        
         if(isFirstNum)
         {
             stringToNum()
@@ -286,6 +351,8 @@ class ViewController: UIViewController
     
     @IBAction func subtractButtonClick(sender: UIButton)
     {
+        shouldReset = false
+        
         if(isFirstNum)
         {
             stringToNum()
@@ -296,6 +363,8 @@ class ViewController: UIViewController
     
     @IBAction func addButtonClick(sender: UIButton)
     {
+        shouldReset = false
+        
         if(isFirstNum)
         {
             stringToNum()
@@ -303,6 +372,53 @@ class ViewController: UIViewController
         
         mathType = ADD
     } //addButtonClick ends
+    
+    @IBAction func calculateButtonClick(sender: UIButton)
+    {
+        if(!isFirstNum)
+        {
+            stringToNum()
+            
+            var err = false
+        
+            switch(mathType)
+            {
+            case ADD: total = firstNum + secondNum
+                break
+            case SUB: total = firstNum - secondNum
+                break
+            case MUL: total = firstNum * secondNum
+                break
+            case DIV:
+                if(secondNum != 0)
+                {
+                    total = firstNum / secondNum
+                } //if ends
+                else
+                {
+                    err = true
+                } //else ends
+                break
+            default : break
+            } //switch ends
+            
+            if(!err)
+            {
+                formatter.minimumFractionDigits = 0
+                formatter.maximumFractionDigits = 5
+                
+                resultsText = formatter.stringFromNumber(total)!
+            } //if ends
+            else
+            {
+                resultsText = "Undefined"
+            } //else ends
+            
+            shouldReset = true
+            
+            updateResultsLabel()
+        } //if ends
+    } //calculateButtonClick ends
     
 }
 
