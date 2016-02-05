@@ -330,14 +330,17 @@ class ViewController: UIViewController
     {
         if(!forceReset)
         {
-            if(posNeg == "")
+            if((resultsText as NSString).doubleValue != 0)
             {
-                posNeg = "-"
+                if(posNeg == "")
+                {
+                    posNeg = "-"
+                } //if ends
+                else
+                {
+                    posNeg = ""
+                } //else ends
             } //if ends
-            else
-            {
-                posNeg = ""
-            } //else ends
         }
         
         updateResultsLabel()
